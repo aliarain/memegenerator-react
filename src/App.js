@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [templates, setTemplates] = useState([]);
+  const [template, setTemplate] = useState(null);
+
+
+useEffect(() => {
+  fetch('https://api.imgflip.com/get_memes').then(x =>
+   x.json().then(response => setTemplates( response.data.memes))
+   );
+
+}, []);
+
+
+
+
+
+  return <div style={{ textAlign: "center" }}>
+ 
+ 
+  {!template &&
+   templates.map(templates=>{
+      return(
+        <img 
+        style={{width: 200}}
+         key={templates.id } 
+         src={templates.url}
+         alt={templates.name}
+         onClick={() =>{
+           setTemplate(template);
+         }}
+         />
+      )
+    })}
+      </div>;  
 }
 
 export default App;
+
